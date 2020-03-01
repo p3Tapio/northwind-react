@@ -11,10 +11,10 @@ export class NavBar extends React.Component {
                 <ul className="navbar-nav mr-auto">
                     {/* <li className="nav-item">
                     <a className="nav-link" href="./hakunimella.php">Haku nimellä<span className="sr-only">(current)</span></a>
-                    </li>
+                    </li>*/}
                     <li className="nav-item">
-                    <a className="nav-link" href="./genret.php">Genret</a>
-                    </li> */}
+                    <a className="nav-link" href="/#">Asiakkaat</a>
+                    </li> 
                 </ul>
                 </div>
           </nav>
