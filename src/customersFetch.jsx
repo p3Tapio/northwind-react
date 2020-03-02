@@ -11,56 +11,34 @@ export class CustomersFetch extends React.Component {
             take: 10
         };
     }
-    // miksi eka klik ei toimi? Nyt näyttää siltä että singnaali liikkuu yhden klikin myöhässä  
-    // KVG: react setstate synchronously ...
-    // "Because this.props and this.state may be updated asynchronously, you should not rely on their values for calculating the next state."
-    // https://reactjs.org/docs/state-and-lifecycle.html#state-updates-may-be-asynchronous
-    handleClickNext = (event) => {
 
-        // var newStart = this.state.start;
-        // if (newStart >= this.state.recordsCount - 10) {
-        //     newStart = newStart - 1;
-        // } else {
-        //     newStart = newStart +10;
-        // }
-        // this.setState({
-        //     start: newStart
-        // })
-        // var help = this.state.start;
-        // alert(this.state.start + ", " + help);
-        // this.GetCustomers();
-
-        this.setState({
-            start: this.state.start + 10
-        })
-        if (this.state.start >= this.state.recordsCount - 10) {
-            this.setState({ start: this.state.recordsCount - 1 })
-        }
-
-        this.GetCustomers();
+    handleClickNext = () => {
+        let newStart = this.state.start +10;  
+        if(newStart > this.state.recordsCount) newStart = this.state.recordsCount-1;
+        this.GetCustomers(newStart);
+        this.setState({start : newStart})
     }
 
-    handleClickPrev = (event) => {
-
-        var newStart = this.state.start;
-        if (newStart > 0) {
-            newStart = newStart - 10;
-        }
-        this.setState({ start: newStart })
-        // alert(this.state.start + ", " + newStart);
-        this.GetCustomers();
-        // Tähän customerien hakuun parametrit joilla haetaan uusi setti? ******** 
+    handleClickPrev = () => {
+        let newStart = this.state.start -10; 
+        if(newStart < 0) newStart = 0; 
+        this.GetCustomers(newStart);
+        this.setState({start : newStart})
     }
     componentDidMount() {
         this.GetCustomers();
     }
-    GetCustomers() {
+    GetCustomers(start) {
+
+        if (start === undefined) start = this.state.start;
+
         axios.get('https://localhost:5001/northwind/customers/')
             .then(res => {
                 const recordsCount = res.data.length;
                 this.setState({ recordsCount });
             })
-        axios.get('https://localhost:5001/northwind/customers/r?offset=' + this.state.start + '&limit=' + this.state.take)
+
+        axios.get('https://localhost:5001/northwind/customers/r?offset=' + start + '&limit=' + this.state.take)
             .then(res => {
                 const customers = res.data;
                 this.setState({ customers });
