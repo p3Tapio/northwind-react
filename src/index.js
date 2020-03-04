@@ -4,12 +4,14 @@ import 'bootswatch/dist/solar/bootstrap.min.css';
 import './tyyli.css';
 import * as serviceWorker from './serviceWorker';
 import { NavBar } from './navscript';
-import { CustomersFetch } from './customersFetch';
+import { CustomersGet } from './customersGet';
+// import { LoginsGet } from './loginsGet';
 
 ReactDOM.render(
     <div>
         <NavBar />
-        <CustomersFetch/>
+        <CustomersGet/>
+        {/* <LoginsGet/> */}
     </div>,
     document.getElementById('root'));
 

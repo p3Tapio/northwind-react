@@ -1,3 +1,9 @@
 body {
     background: rgb(28, 45, 51)
 }
+.navbar-toggler.toggler-example {
+    cursor: pointer;
+}
+thead {
+    cursor: default;
+}
