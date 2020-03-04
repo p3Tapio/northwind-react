@@ -1,9 +1,19 @@
 body {
     background: rgb(28, 45, 51)
 }
-.navbar-toggler.toggler-example {
+/* .navbar-toggler.toggler-example {
     cursor: pointer;
-}
+} */
 thead {
     cursor: default;
+    background-color: #073542;
+}
+.btn-sm {
+    margin: 5px;
+    border: 0px;
+}
+.form-control {
+    cursor: pointer;
+    width: 200px;
+    margin: 5px;
 }

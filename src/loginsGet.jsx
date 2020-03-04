@@ -9,7 +9,7 @@ export class LoginsGet extends React.Component {
             recordsCount: 0
         };
     }
-    // Todo: clicks(?)   
+   
     componentDidMount() {
         this.GetLogins(); 
     }
@@ -24,7 +24,7 @@ export class LoginsGet extends React.Component {
     render() {
         return(
             <div style={{ margin: "15px" }}>
-            <h4>Käyttäjät</h4>
+            <h4 style={{marginLeft:"10px"}}>Käyttäjät</h4>
             <table className="table table-hover" style={{ width: "calc (400px + 50vmin)" }}>
                 <thead><tr className="table-default"><td>Nimi</td><td>Sähköposti</td><td>Käyttäjätunnus</td><td>Käyttöoikeudet</td></tr></thead>
                 <tbody>

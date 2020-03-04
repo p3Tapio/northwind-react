@@ -1,7 +1,9 @@
+// TODO: sisältötekstit modaliin 
+// TODO: Country:ssä Restin puolelle rajoitukset hakutuloksii samoin kuten koko setissä - onko tarpeen? 
+// TODO: Sukunimihaku (rajoituksineen?)
+
 import React from 'react';
 import axios from 'axios';
-
-// TODO: Country-haku
 
 export class CustomersGet extends React.Component {
 
@@ -52,7 +54,7 @@ export class CustomersGet extends React.Component {
                     const customers = res.data;
                     this.setState({ customers });
                 })
-        } else {
+        } else { 
             axios.get('https://localhost:5001/northwind/customers/country/' + country)
                 .then(res => {
                     const customers = res.data;
@@ -71,21 +73,22 @@ export class CustomersGet extends React.Component {
         this.GetCustomers();
     }
     render() {
-
+        
         let countryList = this.state.countries.map((country, index) => <option key={index}>{country}</option>);
 
         return (
-
             <div style={{ margin: "15px" }}>
-                <h4>Asiakkaat</h4>
-                <div className="form-group">
-                    <label>Hae maan perusteella</label>
-                    <select onChange={this.handleChangeCountry} value={this.state.country} className="form-control" style={{ width: "150px" }}>
-                        <option key={0}>Hae kaikki</option>
+               <h4 style={{marginLeft:"10px"}}>Asiakkaat</h4>
+                <div className="form-group row " style={{marginLeft:"1px"}}>
+                    <select onChange={this.handleChangeCountry} value={this.state.country} className="form-control" style={{ width: "200px" }}>
+                        <option key={0}>Hae maan perusteella</option>
                         {countryList}
                     </select>
+                    <input type ="text" className="form-control" placeholder="hae sukunimellä"/>
+                    <button type="button" className="btn btn-secondary btn-sm" data-toggle="modal" data-target="#helpModal">Help</button>
+                    <Modal/>
                 </div>
-                <table className="table table-hover" style={{ width: "calc (400px + 50vmin)" }}>
+                <table className="table table-hover">
                     <thead><tr className="table-default"><td>Yritys</td><td>Yhteyshenkilö</td><td>Osoite</td><td>Puhelinnumero</td></tr></thead>
                     <tbody>
                         {this.state.customers.map(item =>
@@ -107,4 +110,26 @@ export class CustomersGet extends React.Component {
     }
 }
 
+function Modal() { 
 
+    return (
+        <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Help</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulje</button>
+            </div>
+          </div>
+        </div>
+        </div>
+    );
+}
