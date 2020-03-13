@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import { LoginsCreate } from './LoginsCreate';
+import { LoginsCreate } from './TEMPLoginsCreate';
 
 export class LoginsGet extends React.Component {
     constructor(props) {
@@ -73,7 +73,8 @@ export class LoginsGet extends React.Component {
                 <div style={{ margin: "25px" }}>
                     <h4 style={{ marginLeft: "15px" }}>Käyttäjät</h4>
                     <div className="form-group row " style={{ marginLeft: "1px" }}>
-                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-secondary-outline btn-sm" id="mainTable">Kaikki käyttäjät</button></div>
+                        <input onChange={this.handleChangeInput} type="text" className="form-control" id="nimi" placeholder="Hae sukunimellä" style={{ width: "200px" }} />
+                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-secondary-outline btn-sm" id="AddCustomer">Lisää käyttäjä</button></div>
                         <button type="button" className="btn btn-secondary-outline btn-sm" data-toggle="modal" data-target="#helpModal">Help</button>
                         <Modal show="AddLogin" />
                     </div>
@@ -91,24 +92,24 @@ function Modal(props) {
     let msg = "";
     if (props.show === "mainTable") {
         msg = <p>Voit hakea käyttäjätiedot sukunimellä hakukentän avulla. Tietoja voi muokata tai poistaa klikkaamalla käyttäjätietorivillä olevia nappeja. Lisää käyttäjä -nappia painamalla voi lisätä uuden käyttäjän</p>;
-    } else if (props.show === "AddLogin") {
+    } else if (props.show==="AddLogin") {
         msg = <p>Lisää uusi käyttäjä täyttämällä kentät ja painamalla tallenna-nappia.</p>
     }
     return (
-        <div className="modal fade" id="helpModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div className="modal-dialog" role="document">
-                <div className="modal-content">
-                    <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Help</h5>
-                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Help</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div className="modal-body">
+                    <div class="modal-body">
                         {msg}
                     </div>
-                    <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Sulje</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sulje</button>
                     </div>
                 </div>
             </div>

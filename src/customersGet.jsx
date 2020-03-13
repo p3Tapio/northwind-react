@@ -1,4 +1,6 @@
 
+// TODO: 
+// Muokkaa-sivulta palautuessa maa-valikossa tulisi olla "kaikki"
 
 import React from 'react';
 import axios from 'axios';
@@ -16,7 +18,7 @@ export class CustomersGet extends React.Component {
             recordsCount: 0,
             start: 0,
             take: 10,
-            country: '',
+            country: undefined,
             countries: [],
             visible: 'mainTable',
             renderAdd: 'true',
@@ -27,6 +29,7 @@ export class CustomersGet extends React.Component {
         this.handleChangeCountry = this.handleChangeCountry.bind(this);
         this.handleUnmountAdd = this.handleUnmountAdd.bind(this);
         this.handleUnmountEdit = this.handleUnmountEdit.bind(this);
+        this.performDelete = this.performDelete.bind(this);
     }
 
     handleClickNext = () => {
@@ -53,12 +56,21 @@ export class CustomersGet extends React.Component {
         this.setState({ renderEdit: false, visible: 'mainTable' });
         this.GetCustomers();
     }
-
     handleClickEdit = (customer) => {
-        this.setState({ customerForEdit: customer, visible: "EditCustomer", renderEdit: "true"});
+        this.setState({ customerForEdit: customer, visible: "EditCustomer", renderEdit: "true" });
     }
     handleClickMenuBtn(ev) {
         this.setState({ visible: ev.target.id });
+    }
+    performDelete(toDelete) {
+        const url = 'https://localhost:5001/northwind/customers/delete/'+toDelete;
+        axios.delete(url).then(res => {
+            console.log(res+"\n"+res.data); 
+            this.GetCustomers(); 
+        })
+
+
+
     }
     GetCustomers(start, country) {
 
@@ -112,17 +124,22 @@ export class CustomersGet extends React.Component {
                         <thead><tr className="table-default"><td>Yritys</td><td>Yhteyshenkilö</td><td>Osoite</td><td>Puhelinnumero</td><td></td></tr></thead>
                         <tbody>
                             {this.state.customers.map(item =>
+                        
                                 <tr key={item.customerId}>
                                     <td>{item.companyName}</td>
                                     <td>{item.contactTitle} {item.contactName}</td>
                                     <td>{item.address}<br></br>{item.postalCode} {item.city}<br></br>{item.country}</td>
                                     <td>{item.phone}</td>
-                                    <td><button onClick={this.handleClickEdit.bind(this, item)} className="btn btn-outline-secondary" style={{ margin: "10px" }}>Muokkaa</button>
-                                        <button className="btn btn-outline-warning" style={{ margin: "10px" }}>Poista</button></td>
+                                    <td>
+                                        <button onClick={this.handleClickEdit.bind(this, item)} className="btn btn-outline-secondary" style={{ margin: "10px" }}>Muokkaa</button>
+                                        <button onClick={() => this.setState({customerForEdit: item})} className="btn btn-outline-warning" style={{ margin: "10px" }} data-toggle="modal" data-target="#DeleteModal">Poista</button>
+                                    </td>
+                                    <DeleteModal customerToDelete={this.state.customerForEdit} deleteFunction={this.performDelete}/>
                                 </tr>
                             )}
                         </tbody>
                     </table>
+
                     <div style={{ textAlign: "center" }}>
                         <button onClick={this.handleClickPrev} className="btn btn-outline-secondary btn-lg" style={{ marginRight: "5px" }}>Edelliset</button>
                         <button onClick={this.handleClickNext} className="btn btn-outline-secondary btn-lg">Seuraavat</button>
@@ -158,7 +175,44 @@ export class CustomersGet extends React.Component {
         }
     }
 }
+class DeleteModal extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            customerId: '', customerData: []
+        }
+        this.handleClickDelete = this.handleClickDelete.bind(this);
+    }
+    handleClickDelete() {
+        this.props.deleteFunction(this.props.customerToDelete.customerId); 
+    }
+    render() {
+        return (
+            <div className="modal fade" id="DeleteModal" tabIndex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="ModalLabel">Haluatko varmasti poistaa asiakastiedot?</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        {/* <td>{item.address}<br></br>{item.postalCode} {item.city}<br></br>{item.country}</td> */}
+                        <div className="modal-body">
+                                <p>{this.props.customerToDelete.companyName} ({this.props.customerToDelete.customerId})</p>
+                                <p>{this.props.customerToDelete.address}<br/>{this.props.customerToDelete.postalCode} {this.props.customerToDelete.city}<br/>{this.props.customerToDelete.country}</p>
+                        </div>
+                        <div className="modal-footer">
+                            <button onClick={this.handleClickDelete} type="button" className="btn btn-outline-warning" data-dismiss="modal">Poista</button>
+                            <button type="button" className="btn btn-outline-success" data-dismiss="modal">Peruuta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
 
+    }
+}
 
 function Modal(props) {
 
@@ -168,7 +222,7 @@ function Modal(props) {
     } else if (props.show === "add") {
         msg = 'Voit lisätä asiakkaan täyttämällä kaavakkeen ja painamalla Tallenna asiakastiedot -nappulaa.Takaisin päänäkymään pääsee klikkaamalla Kaikki asiakkaat -kohtaa.';
     } else if (props.show === "edit") {
-        msg = 'Tällä sivulla voit muokata asiakastietoja. Pääset takaisin päänäkymään painamalla "kaikki asiakkaat" -kohtaa.';
+        msg = 'Tällä sivulla voit muokata asiakastietoja. Voit palata takaisin päänäkymään tallentamatta tietoja painamalla "kaikki asiakkaat" -kohtaa.';
     } else if (props.show === "delete") {
         msg = 'Tällä sivulla tarkistetaan haluatko varmasti poistaa asiakkaan. Klikkaa palaa takaisin -nappia, jos haluat säilyttää asiakastiedot. Paina poista-nappia, jos haluat poistaa tiedot tietokannasta';
     } else {
@@ -180,7 +234,7 @@ function Modal(props) {
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">Help</h5>
+                        <h5 className="modal-title" id="ModalLabel">Help</h5>
                         <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

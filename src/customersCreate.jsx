@@ -23,8 +23,8 @@ export class CustomersCreate extends Component {
         this.setState({ ...this.state, [ev.target.id]: input });
     }
     handleSubmit(ev) {
-        if(this.state.customerid ==="" || this.state.company ===""  || this.state.phone ==="") {
-            alert("Asiakastietoihin tulee vähintään merkitä asiakastunnus, yrityksen nimi, maa ja puhelinnumero.\nTäytä puuttuvat tiedot ennen tallentamista."); 
+        if(this.state.customerid ==="" || this.state.company ===""  || this.state.phone ===""|| this.state.country ==="") {
+            alert("Täytä edes asiakastunnus, yrityksen nimi, maa ja puhelinnumero ennen tallentamista."); 
             ev.preventDefault();
         }  else {
             ev.preventDefault();
@@ -60,7 +60,6 @@ export class CustomersCreate extends Component {
                 }
             });
     }
-
     render() {
         let countryList = this.state.countries.map((country, index) => <option key={index}>{country}</option>);
         return (

@@ -57,36 +57,38 @@ export class CustomersEdit extends Component {
             });
     }
     render() {
-        console.log(this.props.customer);
+
         let countryList = this.state.countries.map((country, index) => <option key={index}>{country}</option>);
+        const labelStyle = { margin:"0px 0px 0px 8px"};
+
         return (
             <div class="container" style={{ marginLeft: "0px" }}>
                 <h5>Muokkaa asiakkaan "{this.props.customer.companyName}" asiakastietoja</h5><hr />
                 <form onSubmit={this.handleSubmit}>
                         <div class="row">
                             <div className="col-sm-12 ">
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Asiakastunnus</label>
+                                <label style={labelStyle}>Asiakastunnus</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control" id="customerid" defaultValue={this.props.customer.customerId} />
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Yrityksen nimi</label>
+                                <label style={ labelStyle }>Yrityksen nimi</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control" id="company" defaultValue={this.props.customer.companyName} />
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Yrityksen edustaja</label>
+                                <label style={labelStyle }>Yrityksen edustaja</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control" id="contactName" defaultValue={this.props.customer.contactName} />
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Titteli</label>
+                                <label style={ labelStyle}>Edustajan titteli</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control" id="contactTitle" defaultValue={this.props.customer.contactTitle} />
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Osoite</label>
+                                <label style={ labelStyle }>Osoite</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control" id="address" defaultValue={this.props.customer.address} />
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Postinumero</label>
+                                <label style={ labelStyle }>Postinumero</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control" id="postalCode" defaultValue={this.props.customer.postalCode} />
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Kaupunki</label>
+                                <label style={labelStyle }>Kaupunki</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control" id="city" defaultValue={this.props.customer.city} />
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Seutu</label>
+                                <label style={labelStyle}>Seutu</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control" id="region" defaultValue={this.props.customer.region} />
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Maa</label>
+                                <label style={labelStyle}>Maa</label>
                                 <select onChange={this.handleChangeInput} defaultValue={this.state.country} className="form-control" style={{ width: "200px" }} id="country">
                                     <option key={0} value={this.props.customer.country}>{this.props.customer.country}</option>
                                     {countryList}
                                 </select>
-                                <label style={{ margin: "0px 0px 0px 8px" }}>Puhelinnumero</label>
+                                <label style={labelStyle}>Puhelinnumero</label>
                                 <input type="text" onChange={this.handleChangeInput} className="form-control flex-item-9" id="phone" defaultValue={this.props.customer.phone} style={{ marginBottom: "30px" }} />
                                 <div className="row">
                                     <button type="submit" className="btn btn-outline-success" style={{ marginLeft: "20px", width: "200px" }}>Tallenna</button>
