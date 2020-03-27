@@ -12,7 +12,7 @@ export class LoginsCreate extends React.Component {
         this.handleChangeInput = this.handleChangeInput.bind(this);
     }
     handleChangeInput(ev) {
-        this.setState({...this.state, [ev.target.id]: ev.target.value });
+        this.setState({ ...this.state, [ev.target.id]: ev.target.value });
     }
     handleSubmit(ev) {
         if (this.state.username === "" || this.state.email === "" || this.state.password === "") {
@@ -20,6 +20,8 @@ export class LoginsCreate extends React.Component {
             ev.preventDefault();
         } else {
             ev.preventDefault();
+            
+            // Password hash: 
             let url = "http://md5.jsontest.com/?text=" + this.state.password;
             axios({
                 method: 'get',
@@ -40,26 +42,22 @@ export class LoginsCreate extends React.Component {
         }
         const userJson = JSON.stringify(newUser);
 
-     
-
-            fetch('https://localhost:5001/northwind/logins', {
-                method: "POST",
-                headers: {
-                    "Accept": "application/json",
-                    "Content-Type": "application/json"
-                },
-                body: userJson
-            }).then((res) => res.json())
-                .then((json) => {
-                    const success = json;
-                    if (success) {
-                        alert("Pyyntö asiakkaan lisäämiseksi lähetetty");
-                        // this.dismiss();
-                    }
-                });
-
+        fetch('https://localhost:5001/northwind/logins', {
+            method: "POST",
+            headers: {
+                "Accept": "application/json",
+                "Content-Type": "application/json"
+            },
+            body: userJson
+        }).then((res) => res.json())
+            .then((json) => {
+                const success = json;
+                if (success) {
+                    alert("Pyyntö asiakkaan lisäämiseksi lähetetty");
+                    // this.dismiss();
+                }
+            });
     }
-
     render() {
         return (
             <form onSubmit={this.handleSubmit}>

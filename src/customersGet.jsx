@@ -1,6 +1,7 @@
-
+﻿
 // TODO: 
 // Muokkaa-sivulta palautuessa maa-valikossa tulisi olla "kaikki"
+// buttoneissa taitaa luokka määritys olla väärin: btn-outline-success eikä btn-secondary-outline
 
 import React from 'react';
 import axios from 'axios';
@@ -45,7 +46,7 @@ export class CustomersGet extends React.Component {
     }
     handleChangeCountry(event) {
         let selectedCountry = event.target.value;
-        if (selectedCountry === 'Hae maan perusteella') selectedCountry = undefined;
+        if (selectedCountry === 'Hae maan perusteella') selectedCountry = undefined; this.setState({ start: 0}); 
         this.setState({ country: selectedCountry }, this.GetCustomers(this.state.start, selectedCountry));
     }
     handleUnmountAdd() {
@@ -54,7 +55,7 @@ export class CustomersGet extends React.Component {
     }
     handleUnmountEdit() {
         this.setState({ renderEdit: false, visible: 'mainTable' });
-        this.GetCustomers();
+        this.GetCustomers(this.state.start, this.state.country);
     }
     handleClickEdit = (customer) => {
         this.setState({ customerForEdit: customer, visible: "EditCustomer", renderEdit: "true" });
@@ -66,11 +67,8 @@ export class CustomersGet extends React.Component {
         const url = 'https://localhost:5001/northwind/customers/delete/'+toDelete;
         axios.delete(url).then(res => {
             console.log(res+"\n"+res.data); 
-            this.GetCustomers(); 
+            this.GetCustomers(this.state.start, this.state.country); 
         })
-
-
-
     }
     GetCustomers(start, country) {
 
@@ -100,7 +98,7 @@ export class CustomersGet extends React.Component {
             const countries = res.data;
             this.setState({ countries });
         })
-        this.GetCustomers();
+        this.GetCustomers(this.state.start, this.state.country);
     }
     render() {
 
@@ -112,12 +110,12 @@ export class CustomersGet extends React.Component {
                 <div style={{ margin: "25px" }}>
                     <h4 style={{ marginLeft: "15px" }}>Asiakkaat</h4>
                     <div className="form-group row " style={{ marginLeft: "1px" }}>
-                        <select onChange={this.handleChangeCountry} value={this.state.country} className="form-control" style={{ width: "200px" }}>
+                        <select onChange={this.handleChangeCountry} className="form-control" style={{ width: "200px" }}>
                             <option key={0}>Hae maan perusteella</option>
                             {countryList}
                         </select>
-                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-secondary-outline btn-sm" id="AddCustomer">Lisää asiakas</button>
-                            <button type="button" className="btn btn-secondary-outline btn-sm" data-toggle="modal" data-target="#helpModal">Help</button></div>
+                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-outline-secondary btn-sm" id="AddCustomer">Lisää asiakas</button>
+                            <button type="button" className="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#helpModal">Help</button></div>
                         <Modal show="mainTable" />
                     </div>
                     <table className="table table-hover">
