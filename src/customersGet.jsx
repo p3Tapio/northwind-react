@@ -21,9 +21,7 @@ export class CustomersGet extends React.Component {
             take: 10,
             country: undefined,
             countries: [],
-            visible: 'mainTable',
-            renderAdd: 'true',
-            renderEdit: 'true'
+            visible: 'mainTable'
         };
 
         this.handleClickMenuBtn = this.handleClickMenuBtn.bind(this);
@@ -50,15 +48,15 @@ export class CustomersGet extends React.Component {
         this.setState({ country: selectedCountry }, this.GetCustomers(this.state.start, selectedCountry));
     }
     handleUnmountAdd() {
-        this.setState({ renderAdd: false, visible: 'mainTable' });
-        this.GetCustomers();
+        this.setState({ visible: 'mainTable' });
+        this.GetCustomers(this.state.start, this.state.country);
     }
     handleUnmountEdit() {
-        this.setState({ renderEdit: false, visible: 'mainTable' });
+        this.setState({ visible: 'mainTable' });
         this.GetCustomers(this.state.start, this.state.country);
     }
     handleClickEdit = (customer) => {
-        this.setState({ customerForEdit: customer, visible: "EditCustomer", renderEdit: "true" });
+        this.setState({ customerForEdit: customer, visible: "EditCustomer" });
     }
     handleClickMenuBtn(ev) {
         this.setState({ visible: ev.target.id });
@@ -153,7 +151,7 @@ export class CustomersGet extends React.Component {
                             <button type="button" className="btn btn-secondary-outline btn-sm" data-toggle="modal" data-target="#helpModal">Help</button></div>
                         <Modal show="add" />
                     </div>
-                    {this.state.renderAdd ? <CustomersCreate unmountMe={this.handleUnmountAdd} /> : null}
+                   <CustomersCreate unmountMe={this.handleUnmountAdd} />
                 </div>
             )
         } else if (this.state.visible === "EditCustomer") {
@@ -165,7 +163,7 @@ export class CustomersGet extends React.Component {
                             <button type="button" className="btn btn-secondary-outline btn-sm" data-toggle="modal" data-target="#helpModal">Help</button></div>
                         <Modal show="edit" />
                     </div>
-                    {this.state.renderAdd ? <CustomersEdit unmountMe={this.handleUnmountEdit} customer={this.state.customerForEdit} /> : null}
+                  <CustomersEdit unmountMe={this.handleUnmountEdit} customer={this.state.customerForEdit} /> 
                 </div>
             )
         } else {
@@ -195,7 +193,6 @@ class DeleteModal extends React.Component {
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        {/* <td>{item.address}<br></br>{item.postalCode} {item.city}<br></br>{item.country}</td> */}
                         <div className="modal-body">
                                 <p>{this.props.customerToDelete.companyName} ({this.props.customerToDelete.customerId})</p>
                                 <p>{this.props.customerToDelete.address}<br/>{this.props.customerToDelete.postalCode} {this.props.customerToDelete.city}<br/>{this.props.customerToDelete.country}</p>

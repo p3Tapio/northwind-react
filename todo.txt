@@ -1,7 +1,7 @@
 1) Toteuta React -sovellukseesi CRUD-toiminnot seuraaviin tauluihin
 
 Customers (C, R, U, D -- ok)
-Products ( R)
+Products (C, R,   -- ok)      
 Logins
 
 - Koodaa Boolean -tietotyyppisten arvojen asettamiseen
