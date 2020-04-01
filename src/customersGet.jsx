@@ -64,7 +64,6 @@ export class CustomersGet extends React.Component {
     performDelete(toDelete) {
         const url = 'https://localhost:5001/northwind/customers/delete/'+toDelete;
         axios.delete(url).then(res => {
-            console.log(res+"\n"+res.data); 
             this.GetCustomers(this.state.start, this.state.country); 
         })
     }

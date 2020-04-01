@@ -25,10 +25,9 @@ export default class ProductEditModal extends React.Component {
     handleChangeInput(ev) {
 
         if (ev.target.id === 'discontinued') {
-            var newState;
-            newState = this.state.discontinued === true ? false : true;
-            this.setState({ discontinued: newState });
-            alert(newState);
+            if (ev.target.options.selectedIndex === 1) {
+                this.setState({ discontinued: !this.props.productToEdit.discontinued });
+            }
         } else if (ev.target.id === 'supplier') {
             this.setState({ supplierId: ev.target.options.selectedIndex });
         } else if (ev.target.id === 'category') {
@@ -71,7 +70,7 @@ export default class ProductEditModal extends React.Component {
         this.saveEdit(editJson);
     }
     saveEdit(eJson) {
-        console.log(eJson);
+
         fetch('https://localhost:5001/northwind/products/update/' + this.props.productToEdit.productId, {
             method: "PUT",
             headers: {
@@ -92,16 +91,16 @@ export default class ProductEditModal extends React.Component {
 
     }
     handleModalClose() {
-      this.props.clearProductToEdit();
+        this.props.clearProductToEdit();
     }
     render() {
-        var checked; 
+        var booli, booli2, saatavilla, saatavilla2;
         const categoryList = this.state.categories.map(category => <option key={category.categoryId} data-key={category.categoryId} style={{ width: "280px" }} >{category.categoryName}</option>);
         const supplierList = this.state.suppliers.map(supplier => <option key={supplier.supplierId} data-key={supplier.supplierId} style={{ width: "280px" }} >{supplier.companyName}</option>);
         if (this.props.productToEdit.unitPrice !== undefined) var unitP = this.props.productToEdit.unitPrice.toFixed(2);
-        if (this.props.productToEdit.discontinued === false) checked = true; else checked = false;  
-       
-        // TICK BOXIN MUUNTAMINEN EI TOIMI :((( Vaihda dropdowniin? :P 
+        if (this.props.productToEdit.discontinued) {
+            booli = true; saatavilla = "Ei"; booli2 = false; saatavilla2 = "Kyllä";
+        } else { booli = false; saatavilla = "Kyllä"; booli2 = true; saatavilla2 = "Ei" }
 
         return (
 
@@ -109,30 +108,33 @@ export default class ProductEditModal extends React.Component {
                 <div className="modal-dialog" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="ModalLabel">Muokkaa tuotetietoja {this.props.productToEdit.productId} </h5>
+                            <h5 className="modal-title" id="ModalLabel">Muokkaa tuotetietoja </h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={this.handleModalClose}>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
                         <form onSubmit={this.handleClickTallenna.bind(this)}>
                             <div className="modal-body">
-                                <input type="text" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="productName" defaultValue={this.props.productToEdit.productName} />
-                                <select style={{ width: "280px" }} onChange={this.handleChangeInput} className="form-control" id="supplier" >
+                                <input type="text" title="Tuotteen nimi" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="productName" defaultValue={this.props.productToEdit.productName} />
+                                <select style={{ width: "280px" }} onChange={this.handleChangeInput} className="form-control" id="supplier" title="Tuottaja">
                                     <option data-key={this.props.productToEdit.supplierId}>{this.props.productToEdit.suppliername}</option>
                                     {supplierList}
                                 </select>
-                                <select onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="category">
+                                <select onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="category" title="Tuotekategoria">
                                     <option data-key={this.props.productToEdit.categoryId}>{this.props.productToEdit.categoryName}</option>
                                     {categoryList}
                                 </select>
-                                <input type="text" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="quantityPerUnit" defaultValue={this.props.productToEdit.quantity} />
-                                <input type="text" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="unitPrice" defaultValue={unitP} />
-                                <input type="text" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="unitsInStock" defaultValue={this.props.productToEdit.unitsInStock} />
-                                <input type="text" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="unitsOnOrder" defaultValue={this.props.productToEdit.unitsOnOrder} />
-                                <input type="text" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="reorderLevel" defaultValue={this.props.productToEdit.reorderLevel} />
-                                <label className="form-check-label" style={{ marginLeft: '-12px', marginRight: "35px" }}>Saatavilla</label> <input type="checkbox" id="discontinued" onClick={() => checked === false ? true : false}  onChange={this.handleChangeInput} className="form-check-input" checked={checked} />
+                                <input type="text" title="Kappalemäärä" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="quantityPerUnit" defaultValue={this.props.productToEdit.quantity} />
+                                <input type="text" title="Hinta" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="unitPrice" defaultValue={unitP} />
+                                <input type="text" title="Varastossa" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="unitsInStock" defaultValue={this.props.productToEdit.unitsInStock} />
+                                <input type="text" title="Tilaukset" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="unitsOnOrder" defaultValue={this.props.productToEdit.unitsOnOrder} />
+                                <input type="text" title="Uudelleen tilaukset" onChange={this.handleChangeInput} className="form-control" style={{ width: "280px" }} id="reorderLevel" defaultValue={this.props.productToEdit.reorderLevel} />
+                                <label className="form-check-label" style={{ marginLeft: '-12px', marginRight: "35px" }}>Saatavilla</label>
+                                <select onChange={this.handleChangeInput} className="form-control" style={{ width: "100px" }} id="discontinued">
+                                    <option data-key={booli}>{saatavilla}</option>
+                                    <option data-key={booli2}>{saatavilla2}</option>
+                                </select>
                             </div>
-                            {/*  */}
                         </form>
                         <div className="modal-footer">
                             <button onClick={this.handleModalClose} type="button" className="btn btn-outline-warning" data-dismiss="modal">Poistu</button>
@@ -145,3 +147,4 @@ export default class ProductEditModal extends React.Component {
     }
 
 }
+//  <input type="checkbox" id="discontinued" onClick={() => checked = !this.props.productToEdit.discontinued === false ? true : false}  onChange={this.handleChangeInput} className="form-check-input" checked={!this.props.productToEdit.discontinued}/>

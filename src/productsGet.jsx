@@ -7,6 +7,7 @@ import Popover from 'react-bootstrap/Popover';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import ProductCreateNew from './productCreateNew.jsx';
 import ProductEditModal from './productEditModal.jsx';
+import ProductDeleteModal from './productDeleteModal.jsx';
 
 export class productsGet extends React.Component {
     constructor(props) {
@@ -26,6 +27,7 @@ export class productsGet extends React.Component {
         this.handleClickMenuBtn = this.handleClickMenuBtn.bind(this);
         this.handleUnmountAdd = this.handleUnmountAdd.bind(this);
         this.clearProductToEdit = this.clearProductToEdit.bind(this);
+        this.performDelete = this.performDelete.bind(this);
     }
     componentDidMount() {
         axios.get('https://localhost:5001/northwind/products/categories').then(res => {
@@ -55,9 +57,18 @@ export class productsGet extends React.Component {
         }
     }
     clearProductToEdit() {
-        this.setState({ productToEdit: []  });
-        this.getProducts(this.state.start, this.state.categoryId); 
+        this.setState({ productToEdit: [] }, window.location.reload());
+
     }
+    performDelete(id) {
+        const url = 'https://localhost:5001/northwind/products/delete/'+id;
+        axios.delete(url).then(res => {
+            this.getProducts(this.state.start, this.state.categoryId);
+        }).catch(err => {
+            console.log(err);
+        })
+    }
+
     getProducts(start, categoryId) {
 
         if (start === undefined) start = this.state.start;
@@ -113,8 +124,10 @@ export class productsGet extends React.Component {
                             {this.state.products.map(item =>
                                 <tr key={item.productId}>
                                     <td>{item.productId}</td><td>{item.productName}</td><td title={item.categoryDescription}>{item.categoryName}</td><td>{item.unitPrice.toFixed(2)}</td><td>{item.unitsInStock}</td>
-                                   <td> <button onClick={() => this.setState({productToEdit: item})} className="btn btn-outline-secondary" style={{ margin: "10px" }} data-toggle="modal" data-target="#EditModal">Muokkaa</button></td>
+                                    <td> <button onClick={() => this.setState({ productToEdit: item })} className="btn btn-outline-secondary" style={{ margin: "10px" }} data-toggle="modal" data-target="#EditModal">Muokkaa</button>
+                                     <button onClick={() => this.setState({ productToEdit: item })} className="btn btn-outline-warning" style={{ margin: "10px" }} data-toggle="modal" data-target="#DeleteModal">Poista</button></td>
                                     <ProductEditModal productToEdit={this.state.productToEdit} clearProductToEdit={this.clearProductToEdit} />
+                                    <ProductDeleteModal productToEdit={this.state.productToEdit} deleteFunction = {this.performDelete} />
                                 </tr>
                             )}
                         </tbody>

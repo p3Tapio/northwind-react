@@ -1,8 +1,8 @@
 1) Toteuta React -sovellukseesi CRUD-toiminnot seuraaviin tauluihin
 
 Customers (C, R, U, D -- ok)
-Products (C, R,   -- ok)      
-Logins
+Products (C, R, U,  D  -- ok)      
+Logins (C, R, U, D --- ok)
 
 - Koodaa Boolean -tietotyyppisten arvojen asettamiseen
  kayttaliittymassa radiobutton-tyyppinen -kayttoliittymakomponentti

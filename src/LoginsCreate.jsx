@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 export class LoginsCreate extends React.Component {
     constructor(props) {
@@ -20,17 +19,7 @@ export class LoginsCreate extends React.Component {
             ev.preventDefault();
         } else {
             ev.preventDefault();
-            
-            // Password hash: 
-            let url = "http://md5.jsontest.com/?text=" + this.state.password;
-            axios({
-                method: 'get',
-                url: url,
-                config: { headers: { 'Content-Type': 'application/json' } }
-            }).then(res => {
-                const password = res.data;
-                this.setState({ password: password.md5 })
-            });
+
             this.saveUser();
         }
     }
@@ -38,7 +27,7 @@ export class LoginsCreate extends React.Component {
 
         const newUser = {
             Firstname: this.state.firstname, Lastname: this.state.lastname,
-            Email: this.state.email, Username: this.state.username, Password: 'password', AccesslevelId: this.state.accesslevelId
+            Email: this.state.email, Username: this.state.username, Password: this.state.password, AccesslevelId: this.state.accesslevelId
         }
         const userJson = JSON.stringify(newUser);
 
@@ -53,15 +42,15 @@ export class LoginsCreate extends React.Component {
             .then((json) => {
                 const success = json;
                 if (success) {
-                    alert("Pyyntö asiakkaan lisäämiseksi lähetetty");
-                    // this.dismiss();
+                    alert("Pyyntö käyttäjän lisäämiseksi lähetetty");
+                    this.props.unmountMe();
                 }
             });
     }
     render() {
         return (
             <form onSubmit={this.handleSubmit}>
-                <h4 style={{ marginLeft: "20px" }}>Lisää asiakas</h4>
+                <h4 style={{ marginLeft: "20px" }}>Lisää Käyttäjä</h4>
                 <div className="form-group">
                     <div className="col-sm-10">
                         <input type="text" onChange={this.handleChangeInput} className="form-control" id="firstname" placeholder="Etunimi" />
@@ -77,7 +66,7 @@ export class LoginsCreate extends React.Component {
                             <option key={4}>4</option>
                             <option key={5}>5</option>
                         </select>
-                        <button type="submit" className="btn btn-outline-success" style={{ margin: "5px", width: "200px" }}>Tallenna asiakastiedot</button><br />
+                        <button type="submit" className="btn btn-outline-success" style={{ margin: "5px", width: "200px" }}>Tallenna käyttäjätiedot</button><br />
                         <button type="reset" className="btn btn-outline-warning" style={{ marginLeft: "5px", width: "200px" }}>Tyhjennä kentät</button>
                     </div>
                 </div>
@@ -85,5 +74,3 @@ export class LoginsCreate extends React.Component {
         );
     }
 }
-
-//* SALASANA HASH: 

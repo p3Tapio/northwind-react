@@ -1,28 +1,31 @@
 import React from 'react';
 import axios from 'axios';
 import { LoginsCreate } from './LoginsCreate';
+import { LoginsEdit } from './LoginsEdit.jsx';
 
 export class LoginsGet extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { logins: [], recordsCount: 0, visible: "mainTable" };
+        this.state = { logins: [], recordsCount: 0, visible: "mainTable", userForEdit: [] };
         this.handleClickMenuBtn = this.handleClickMenuBtn.bind(this);
+        this.handleUnmount = this.handleUnmount.bind(this);
+        this.performDelete = this.performDelete.bind(this);
     }
 
     componentDidMount() {
-        this.GetLogins("");
+        this.getLogins("");
     }
     handleChangeInput = (ev) => {
-        if (ev.target.value.length > 0) this.GetLogins(ev.target.value);
-        else this.GetLogins("");
+        if (ev.target.value.length > 0) this.getLogins(ev.target.value);
+        else this.getLogins("");
     }
-    handleClickEdit() {
-
+    handleUnmount() {
+        this.setState({ visible: "mainTable" }, this.getLogins(""))
     }
     handleClickMenuBtn(ev) {
         this.setState({ visible: ev.target.id });
     }
-    GetLogins(sukunimi) {
+    getLogins(sukunimi) {
 
         let url = "";
         if (sukunimi === "") url = 'https://localhost:5001/northwind/logins';
@@ -32,9 +35,16 @@ export class LoginsGet extends React.Component {
             .then(res => {
                 const recordsCount = res.data.length;
                 const logins = res.data;
-                console.log(logins);
                 this.setState({ logins, recordsCount })
             })
+    }
+    performDelete(id) {
+        const url = 'https://localhost:5001/northwind/logins/delete/' + id;
+        axios.delete(url).then(res => {
+            this.getLogins("");
+        }).catch(err => {
+            console.log(err);
+        })
     }
     render() {
         if (this.state.visible === "mainTable") {
@@ -43,8 +53,8 @@ export class LoginsGet extends React.Component {
                     <h4 style={{ marginLeft: "15px" }}>Käyttäjät</h4>
                     <div className="form-group row " style={{ marginLeft: "1px" }}>
                         <input onChange={this.handleChangeInput} type="text" className="form-control" id="nimi" placeholder="Hae sukunimellä" style={{ width: "200px" }} />
-                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-secondary-outline btn-sm" id="AddLogin">Lisää käyttäjä</button></div>
-                        <button type="button" className="btn btn-secondary-outline btn-sm" data-toggle="modal" data-target="#helpModal">Help</button>
+                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-outline-secondary btn-sm" id="AddLogin">Lisää käyttäjä</button>
+                            <button type="button" className="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#helpModal">Help</button></div>
                         <Modal show="mainTable" />
                     </div>
                     <table className="table table-hover" style={{ width: "calc (400px + 50vmin)" }}>
@@ -57,8 +67,9 @@ export class LoginsGet extends React.Component {
                                     <td>{item.username}</td>
                                     <td>{item.accesslevelId}</td>
                                     <td>
-                                        <button onClick={this.handleClickEdit.bind(this, item)} className="btn btn-outline-secondary" style={{ margin: "10px" }}>Muokkaa</button>
-                                        <button onClick={() => this.setState({ customerForEdit: item })} className="btn btn-outline-warning" style={{ margin: "10px" }} data-toggle="modal" data-target="#DeleteModal">Poista</button>
+                                        <button onClick={() => this.setState({ userForEdit: item, visible: "edit" })} className="btn btn-outline-secondary" style={{ margin: "10px" }}>Muokkaa</button>
+                                        <button onClick={() => this.setState({ userForEdit: item })} className="btn btn-outline-warning" style={{ margin: "10px" }} data-toggle="modal" data-target="#DeleteModal">Poista</button>
+                                        <DeleteModal user={this.state.userForEdit} deleteFunction={this.performDelete} />
                                     </td>
                                 </tr>
                             )}
@@ -71,28 +82,72 @@ export class LoginsGet extends React.Component {
         } else if (this.state.visible === "AddLogin") {
             return (
                 <div style={{ margin: "25px" }}>
-                    <h4 style={{ marginLeft: "15px" }}>Käyttäjät</h4>
+                    <h4 style={{ marginLeft: "15px" }}>Lisää käyttäjä</h4>
                     <div className="form-group row " style={{ marginLeft: "1px" }}>
-                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-secondary-outline btn-sm" id="mainTable">Kaikki käyttäjät</button></div>
-                        <button type="button" className="btn btn-secondary-outline btn-sm" data-toggle="modal" data-target="#helpModal">Help</button>
+                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-outline-secondary btn-sm" id="mainTable">Kaikki käyttäjät</button>
+                            <button type="button" className="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#helpModal">Help</button></div>
                         <Modal show="AddLogin" />
                     </div>
-                    <LoginsCreate />
+                    <LoginsCreate unmountMe={this.handleUnmount} />
                 </div>
             )
-        } else {
-            return <h4>ERROR</h4>;
+        } else if (this.state.visible === "edit") {
+            return (
+                <div style={{ margin: "25px" }}>
+                    <h4 style={{ marginLeft: "15px" }}>Muokkaa käyttäjätietoja</h4>
+                    <div className="form-group row " style={{ marginLeft: "1px" }}>
+                        <div style={{ marginTop: "5px" }}><button onClick={this.handleClickMenuBtn} type="button" className="btn btn-outline-secondary btn-sm" id="mainTable">Kaikki käyttäjät</button>
+                            <button type="button" className="btn btn-outline-secondary btn-sm" data-toggle="modal" data-target="#helpModal">Help</button></div>
+                        <Modal show="edit" />
+                    </div>
+                    <LoginsEdit unmountMe={this.handleUnmount} user={this.state.userForEdit} />
+                </div>
+            )
+
+        }
+        else {
+            return <h4>Loading, loading .... </h4>;
         }
     }
 
 
 }
+class DeleteModal extends React.Component {
+
+    handleClickDelete() {
+        this.props.deleteFunction(this.props.user.loginId);
+    }
+    render() {
+        return (
+            <div className="modal fade" id="DeleteModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalLabel">Haluatko varmasti poistaa käyttäjän <br />{this.props.user.firstname} {this.props.user.lastname}?</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-footer">
+                            <button onClick={this.handleClickDelete.bind(this)} type="button" className="btn btn-outline-warning" data-dismiss="modal">Poista</button>
+                            <button type="button" className="btn btn-outline-success" data-dismiss="modal">Peruuta</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+
+    }
+}
+
 function Modal(props) {
     let msg = "";
     if (props.show === "mainTable") {
         msg = <p>Voit hakea käyttäjätiedot sukunimellä hakukentän avulla. Tietoja voi muokata tai poistaa klikkaamalla käyttäjätietorivillä olevia nappeja. Lisää käyttäjä -nappia painamalla voi lisätä uuden käyttäjän</p>;
     } else if (props.show === "AddLogin") {
         msg = <p>Lisää uusi käyttäjä täyttämällä kentät ja painamalla tallenna-nappia.</p>
+    } else if (props.show === "edit") {
+        msg = <p>Voit muokata käyttäjän tietoja vaihtamalla kentissä olevia tietoja.</p>
     }
     return (
         <div className="modal fade" id="helpModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
