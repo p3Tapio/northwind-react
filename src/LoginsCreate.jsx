@@ -14,12 +14,11 @@ export class LoginsCreate extends React.Component {
         this.setState({ ...this.state, [ev.target.id]: ev.target.value });
     }
     handleSubmit(ev) {
-        if (this.state.username === "" || this.state.email === "" || this.state.password === "") {
-            alert("Anna edes käyttäjätunnus, salasana ja sähköposti ennen tallentamista.");
+        if (this.state.username === "" || this.state.lastname === "" || this.state.password === "") {
+            alert("Anna edes käyttäjätunnus, salasana ja sukunimi ennen tallentamista.");
             ev.preventDefault();
         } else {
             ev.preventDefault();
-
             this.saveUser();
         }
     }

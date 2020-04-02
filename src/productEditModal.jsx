@@ -145,6 +145,4 @@ export default class ProductEditModal extends React.Component {
             </div>
         )
     }
-
 }
-//  <input type="checkbox" id="discontinued" onClick={() => checked = !this.props.productToEdit.discontinued === false ? true : false}  onChange={this.handleChangeInput} className="form-check-input" checked={!this.props.productToEdit.discontinued}/>

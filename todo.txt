@@ -1,6 +1,6 @@
 1) Toteuta React -sovellukseesi CRUD-toiminnot seuraaviin tauluihin
 
-Customers (C, R, U, D -- ok)
+Customers (C, R, U, D) -- OK 
 Products (C, R, U,  D  -- ok)      
 Logins (C, R, U, D --- ok)
 
