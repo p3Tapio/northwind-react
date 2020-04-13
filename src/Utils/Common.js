@@ -16,6 +16,7 @@ export const getToken = () => {
 export const removeUserSession = () => {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user'); 
+  
 }
 
 // Tallentaa tokenin ja käyttäjän session storageen 

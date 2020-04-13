@@ -1,9 +1,4 @@
-﻿
-// TODO: 
-// Muokkaa-sivulta palautuessa maa-valikossa tulisi olla "kaikki"
-// buttoneissa taitaa luokka määritys olla väärin: btn-outline-success eikä btn-secondary-outline
-
-import React from 'react';
+﻿import React from 'react';
 import axios from 'axios';
 import { CustomersCreate } from './customersCreate';
 import { CustomersEdit } from './customersEdit';

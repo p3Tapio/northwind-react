@@ -1,6 +1,3 @@
-// huom pudotusvalikkoja, jottei fk:t kosahda jne 
-
-
 import React from 'react';
 import axios from 'axios';
 import Popover from 'react-bootstrap/Popover';
