@@ -20,7 +20,7 @@ export default class Login extends Component {
         if (this.state.username === '' || this.state.password === '') {
             alert("Anna käyttäjätunnus ja salasana");
         } else {
-            axios.post('https://localhost:5001/northwind/logins/singin/', { username: this.state.username, password: this.state.password })
+            axios.post('https://northwindrestapi.azurewebsites.net/northwind/logins/singin/', { username: this.state.username, password: this.state.password })
                 .then(response => {
                     alert("Tervetuloa " + response.data.user.username + "!");
                     setUserSession(response.data.token, response.data.user);

@@ -12,7 +12,7 @@ export class CustomersCreate extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount() {
-        axios.get('https://localhost:5001/northwind/customers/country').then(res => {
+        axios.get('https://northwindrestapi.azurewebsites.net/northwind/customers/country').then(res => {
             const countries = res.data;
             this.setState({ countries });
         })
@@ -44,7 +44,7 @@ export class CustomersCreate extends Component {
         }
         const customerJson = JSON.stringify(customer);
 
-        fetch('https://localhost:5001/northwind/customers', {
+        fetch('https://northwindrestapi.azurewebsites.net/northwind/customers', {
             method: "POST",
             headers: {
                 "Accept": "application/json",

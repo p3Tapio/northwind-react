@@ -57,7 +57,7 @@ export class CustomersGet extends React.Component {
         this.setState({ visible: ev.target.id });
     }
     performDelete(toDelete) {
-        const url = 'https://localhost:5001/northwind/customers/delete/'+toDelete;
+        const url = 'https://northwindrestapi.azurewebsites.net/northwind/customers/delete/'+toDelete;
         axios.delete(url).then(res => {
             this.GetCustomers(this.state.start, this.state.country); 
         })
@@ -66,18 +66,18 @@ export class CustomersGet extends React.Component {
 
         if (start === undefined) start = this.state.start;
         if (country === undefined) {
-            axios.get('https://localhost:5001/northwind/customers/')
+            axios.get('https://northwindrestapi.azurewebsites.net/northwind/customers/')
                 .then(res => {
                     const recordsCount = res.data.length;
                     this.setState({ recordsCount });
                 })
-            axios.get('https://localhost:5001/northwind/customers/r?offset=' + start + '&limit=' + this.state.take)
+            axios.get('https://northwindrestapi.azurewebsites.net/northwind/customers/r?offset=' + start + '&limit=' + this.state.take)
                 .then(res => {
                     const customers = res.data;
                     this.setState({ customers });
                 })
         } else {
-            axios.get('https://localhost:5001/northwind/customers/country/' + country)
+            axios.get('https://northwindrestapi.azurewebsites.net/northwind/customers/country/' + country)
                 .then(res => {
                     const customers = res.data;
                     const recordsCount = res.data.length;
@@ -86,7 +86,7 @@ export class CustomersGet extends React.Component {
         }
     }
     componentDidMount() {
-        axios.get('https://localhost:5001/northwind/customers/country').then(res => {
+        axios.get('https://northwindrestapi.azurewebsites.net/northwind/customers/country').then(res => {
             const countries = res.data;
             this.setState({ countries });
         })

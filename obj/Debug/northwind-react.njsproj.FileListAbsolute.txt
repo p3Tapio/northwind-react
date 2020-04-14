@@ -1,2 +1,3 @@
 D:\Kood\GitRepo\northwind-react\obj\Debug\northwind-react.njsprojAssemblyReference.cache
 D:\Kood\GitRepo\northwind-react\bin\Microsoft.NodejsTools.WebRole.dll
+D:\Kood\GitRepo\northwind-react\obj\Debug\northwind-react.njsproj.CoreCompileInputs.cache

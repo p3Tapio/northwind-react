@@ -28,8 +28,8 @@ export class LoginsGet extends React.Component {
     getLogins(sukunimi) {
 
         let url = "";
-        if (sukunimi === "") url = 'https://localhost:5001/northwind/logins';
-        else url = 'https://localhost:5001/northwind/logins/' + sukunimi;
+        if (sukunimi === "") url = 'https://northwindrestapi.azurewebsites.net/northwind/logins';
+        else url = 'https://northwindrestapi.azurewebsites.net/northwind/logins/' + sukunimi;
 
         axios.get(url)
             .then(res => {
@@ -39,7 +39,7 @@ export class LoginsGet extends React.Component {
             })
     }
     performDelete(id) {
-        const url = 'https://localhost:5001/northwind/logins/delete/' + id;
+        const url = 'https://northwindrestapi.azurewebsites.net/northwind/logins/delete/' + id;
         axios.delete(url).then(res => {
             this.getLogins("");
         }).catch(err => {

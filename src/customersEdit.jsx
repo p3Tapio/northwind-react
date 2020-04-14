@@ -12,7 +12,7 @@ export class CustomersEdit extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount() {
-        axios.get('https://localhost:5001/northwind/customers/country').then(res => {
+        axios.get('https://northwindrestapi.azurewebsites.net/northwind/customers/country').then(res => {
             const countries = res.data;
             this.setState({ countries });
         })
@@ -39,7 +39,7 @@ export class CustomersEdit extends Component {
             country: this.state.country, phone: this.state.phone
         }
         const customerJson = JSON.stringify(customer);
-        const url = 'https://localhost:5001/northwind/customers/' + this.state.customerid;
+        const url = 'https://northwindrestapi.azurewebsites.net/northwind/customers/' + this.state.customerid;
         fetch(url, {
             method: "PUT",
             headers: {

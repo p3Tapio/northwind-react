@@ -30,7 +30,7 @@ export class LoginsCreate extends React.Component {
         }
         const userJson = JSON.stringify(newUser);
 
-        fetch('https://localhost:5001/northwind/logins', {
+        fetch('https://northwindrestapi.azurewebsites.net/northwind/logins', {
             method: "POST",
             headers: {
                 "Accept": "application/json",

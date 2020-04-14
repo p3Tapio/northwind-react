@@ -27,7 +27,7 @@ export class productsGet extends React.Component {
         this.performDelete = this.performDelete.bind(this);
     }
     componentDidMount() {
-        axios.get('https://localhost:5001/northwind/products/categories').then(res => {
+        axios.get('https://northwindrestapi.azurewebsites.net/northwind/products/categories').then(res => {
             const categories = res.data;
             this.setState({ categories });
         })
@@ -58,7 +58,7 @@ export class productsGet extends React.Component {
 
     }
     performDelete(id) {
-        const url = 'https://localhost:5001/northwind/products/delete/'+id;
+        const url = 'https://northwindrestapi.azurewebsites.net/northwind/products/delete/'+id;
         axios.delete(url).then(res => {
             this.getProducts(this.state.start, this.state.categoryId);
         }).catch(err => {
@@ -70,18 +70,18 @@ export class productsGet extends React.Component {
 
         if (start === undefined) start = this.state.start;
         if (categoryId === undefined) {
-            axios.get('https://localhost:5001/northwind/products/')
+            axios.get('https://northwindrestapi.azurewebsites.net/northwind/products/')
                 .then(res => {
                     const recordsCount = res.data.length;
                     this.setState({ recordsCount });
                 })
-            axios.get('https://localhost:5001/northwind/products/r?offset=' + start + '&limit=' + this.state.take)
+            axios.get('https://northwindrestapi.azurewebsites.net/northwind/products/r?offset=' + start + '&limit=' + this.state.take)
                 .then(res => {
                     const products = res.data;
                     this.setState({ products });
                 })
         } else {
-            axios.get('https://localhost:5001/northwind/products/category/' + categoryId)
+            axios.get('https://northwindrestapi.azurewebsites.net/northwind/products/category/' + categoryId)
                 .then(res => {
                     const products = res.data;
                     const recordsCount = res.data.length;

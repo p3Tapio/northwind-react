@@ -35,7 +35,7 @@ export class LoginsEdit extends Component {
     }
     saveEdit(eJson) {
 
-        fetch('https://localhost:5001/northwind/logins/' + this.props.user.loginId, {
+        fetch('https://northwindrestapi.azurewebsites.net/northwind/logins/' + this.props.user.loginId, {
             method: "PUT",
             headers: {
                 "Accept": "application/json",

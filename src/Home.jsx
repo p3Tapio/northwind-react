@@ -10,6 +10,7 @@ export class Home extends Component {
         };
         return (
             <div className="container">
+            
                 <div className="jumbotron" style={style}>
                     <h3 className="display-3">Northwind-React!</h3>
                     <p className="lead"></p>

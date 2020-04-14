@@ -14,11 +14,11 @@ export default class ProductCreateNew extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     componentDidMount() {
-        axios.get('https://localhost:5001/northwind/products/categories').then(res => {
+        axios.get('https://northwindrestapi.azurewebsites.net/northwind/products/categories').then(res => {
             const categories = res.data;
             this.setState({ categories });
         })
-        axios.get('https://localhost:5001/northwind/products/suppliers').then(res => {
+        axios.get('https://northwindrestapi.azurewebsites.net/northwind/products/suppliers').then(res => {
             const suppliers = res.data;
             this.setState({ suppliers });
         })
@@ -61,7 +61,7 @@ export default class ProductCreateNew extends Component {
             discontinued: this.state.discontinued
         })
 
-        fetch('https://localhost:5001/northwind/products/create', {
+        fetch('https://northwindrestapi.azurewebsites.net/northwind/products/create', {
             method: "POST",
             headers: {
                 "Accept": "application/json",
