@@ -4,12 +4,12 @@ import 'bootswatch/dist/solar/bootstrap.min.css';
 import './tyyli.css';
 import * as serviceWorker from './serviceWorker';
 import Navigator from './Navigator';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 ReactDOM.render((
-    <BrowserRouter>
+    <HashRouter>
         <Navigator />
-    </BrowserRouter>
+    </HashRouter>
 ), document.getElementById('root'));
 
 serviceWorker.unregister();
